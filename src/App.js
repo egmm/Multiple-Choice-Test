@@ -1,12 +1,22 @@
 import React from 'react';
-import './App.css';
+import PropTypes from 'prop-types'
+import { Provider } from 'react-redux'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Test from './TestView/containers/TestView';
 
-function App() {
+
+function App({ store }) {
   return (
-    <div className="App">
-
-    </div>
+    <Provider store={store}>
+      <Router>
+        <Route path='/' component={Test} />
+      </Router>
+    </Provider>
   );
+}
+
+App.propTypes = {
+  store: PropTypes.object.isRequired
 }
 
 export default App;

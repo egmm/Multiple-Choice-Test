@@ -1,0 +1,16 @@
+.checkbox {
+    width: 3vh;
+    height: 3vh;
+    border: 3px solid #00aaee;
+    position: relative;
+    margin-right: 1em
+}
+.checked::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    height: 60%;
+    width: 60%;
+    background-color: #00aaee;
+}

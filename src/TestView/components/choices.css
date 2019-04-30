@@ -1,0 +1,15 @@
+ul.choices {
+    padding: 0;
+    list-style-type: none;
+    flex: 1;
+}
+ul.choices>li {
+    height: 6vh;
+    display: flex;
+}
+ul.choices>li * {
+    margin: auto 0;
+}
+ul.choices>li span {
+    margin-left: 1em;
+}

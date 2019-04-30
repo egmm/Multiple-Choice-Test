@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
-import { testView } from './testView.js';
+import { testView } from './testView';
+import { choices } from './choices';
 
 
 const allReducers = combineReducers({
-    testView
+    testView,
+    choices
 })
 
 export default allReducers;

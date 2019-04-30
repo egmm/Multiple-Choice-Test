@@ -1,37 +1,52 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom';
 import Welcome from '../components/Welcome';
 import QuestionsList from './QuestionsList';
-import quiz from '../../api/quiz.json';
+import { fetchTest } from '../../actions/multipleChoiceTest';
 import './testView.css';
 
 
 class TestView extends Component {
     constructor(props) {
         super(props);
-        this.state = { current: 0 };
+        this.state = { test: null };
+    }
+    componentDidMount() {
+        this.props.fetchTest();
     }
     goToTest = () => {
         const { history } = this.props;
         history.push('/test');
     }
+    get content() {
+        const { test } = this.props;
+        if (test.error) {
+            // TODO: Create a component for managing errors
+            return <h1>Some error happend</h1>
+        }
+        return (
+            <Switch>
+                <Route
+                    exact path='/'
+                    render={() => (
+                        <Welcome testName={test.content.name} onClick={this.goToTest} />
+                    )} />
+                <Route
+                    path='/test'
+                    render={() => (
+                        <QuestionsList questions={test.content.questions} />
+                    )} />
+            </Switch>
+        );
+    }
     render() {
-        const { name, questions } = quiz;
+        const { test } = this.props;
         return (
             <div id="container">
-                <Switch>
-                    <Route
-                        exact path='/'
-                        render={() => (
-                            <Welcome testName={name} onClick={this.goToTest} />
-                        )} />
-                    <Route
-                        path='/test'
-                        render={() => (
-                            <QuestionsList questions={questions} />
-                        )} />
-                </Switch>
+                {test.isFetching || test.content === null ? <h1>Loading</h1> : this.content}
             </div>
         );
     }
@@ -56,4 +71,13 @@ TestView.defaultProps = {
     test: null
 };
 
-export default TestView;
+const mapStateToProps = state => {
+    return {
+        test: state.testView
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({ fetchTest }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TestView);

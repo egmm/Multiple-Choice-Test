@@ -1,13 +1,15 @@
 import {
     TEST_REQUEST,
     TEST_RECEIVED,
-    TEST_REQUEST_FAILED
+    TEST_REQUEST_FAILED,
+    ANSWERS_TO_SUBMIT
 } from '../actions/multipleChoiceTest';
 
 const initialState = {
     isFetching: false,
     content: null,
-    error: null
+    error: null,
+    answers: []
 };
 
 export function testView(state = initialState, action) {
@@ -18,6 +20,8 @@ export function testView(state = initialState, action) {
             return { ...state, isFetching: false, content: action.payload };
         case TEST_REQUEST_FAILED:
             return { ...state, isFetching: false, error: action.payload };
+        case ANSWERS_TO_SUBMIT:
+            return { ...state, answers: [...state.answers, action.payload] };
         default:
             return state;
     }

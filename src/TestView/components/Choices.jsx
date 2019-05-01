@@ -4,14 +4,14 @@ import Checkbox from '../../common/Checkbox';
 import './choices.css';
 
 
-const Choices = ({ choices, selected, onClick }) => {
+const Choices = ({ questionId, choices, selected, onClick }) => {
     return (
         <ul className="choices">
             {
                 choices.map((choice, k) => {
                     const isSelected = selected.includes(choice.id);
                     return (
-                        <li key={k} onClick={() => onClick(choice.id)}>
+                        <li key={k} onClick={() => onClick(choice.id, questionId)}>
                             <Checkbox isSelected={isSelected} />
                             <span>{choice.value}</span>
                         </li>

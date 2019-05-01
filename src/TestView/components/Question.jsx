@@ -10,10 +10,11 @@ const Question = ({ question, choiceClicked, submit, selectedChoices }) => {
         <Fragment>
             <h4>{question.statement}</h4>
             <Choices
+                questionId={question.id}
                 choices={question.options}
                 selected={selectedChoices}
                 onClick={choiceClicked} />
-            <Button action='Next' onClick={submit} />
+            <Button action='Next' onClick={() => submit(question.id)} />
         </Fragment>
     );
 }

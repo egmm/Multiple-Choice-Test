@@ -1,4 +1,5 @@
 import { multiChoiceTest, checkAnswers } from './api';
+import { allFailed, allCorrect, randomCase } from './test';
 import quiz from './quiz.json';
 
 
@@ -8,7 +9,6 @@ it('Returns the data correctly', () => {
 
 describe('Checking the submitAnswer method', () => {
     test('Returns 0 when giving 0 answers', () => {
-        const expected = { topScore: 100, score: 0 };
         const failedChoices = [
             { id: '1', answers: [] },
             { id: '2', answers: [] },
@@ -21,10 +21,9 @@ describe('Checking the submitAnswer method', () => {
             { id: '9', answers: [] },
         ];
         return checkAnswers(failedChoices)
-            .then(response => expect(response).toEqual(expected));
+            .then(response => expect(response).toEqual(allFailed));
     });
     test('Returns 100 when giving all answers correct', () => {
-        const expected = { topScore: 100, score: 100 };
         const failedChoices = [
             { id: '1', answers: ["1"] },
             { id: '2', answers: ["4"] },
@@ -37,10 +36,9 @@ describe('Checking the submitAnswer method', () => {
             { id: '9', answers: ["25"] },
         ];
         return checkAnswers(failedChoices)
-            .then(response => expect(response).toEqual(expected));
+            .then(response => expect(response).toEqual(allCorrect));
     });
     test('Returns correct score to a given case', () => {
-        const expected = { topScore: 100, score: 67 };
         const failedChoices = [
             { id: '1', answers: [] },
             { id: '2', answers: ["4"] },
@@ -53,6 +51,6 @@ describe('Checking the submitAnswer method', () => {
             { id: '9', answers: ["25"] },
         ];
         return checkAnswers(failedChoices)
-            .then(response => expect(response).toEqual(expected));
+            .then(response => expect(response).toEqual(randomCase));
     });
 })

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Switch, Route } from 'react-router-dom';
 import Welcome from '../components/Welcome';
 import QuestionsList from './QuestionsList';
+import Results from '../components/Results';
 import { fetchTest } from '../../actions/multipleChoiceTest';
 import './testView.css';
 
@@ -22,10 +23,9 @@ class TestView extends Component {
         history.push('/test');
     }
     get content() {
-        const { test } = this.props;
+        const { test, scores } = this.props;
         if (test.error) {
-            // TODO: Create a component for managing errors
-            return <h1>Some error happend</h1>
+            return <h1>Something went wrong</h1>
         }
         return (
             <Switch>
@@ -36,9 +36,19 @@ class TestView extends Component {
                     )} />
                 <Route
                     path='/test'
-                    render={() => (
-                        <QuestionsList questions={test.content.questions} />
+                    render={({ history }) => (
+                        <QuestionsList history={history} questions={test.content.questions} />
                     )} />
+                <Route path='/results' render={() => {
+                    if (scores.isFetching) {
+                        return <h1>Loading</h1>
+                    }
+                    return (
+                        scores.results ?
+                            <Results scores={scores.results} questions={test.content.questions} /> :
+                            <p>We don't have results yet. Try to take a test first!</p>
+                    );
+                }} />
             </Switch>
         );
     }
@@ -73,7 +83,8 @@ TestView.defaultProps = {
 
 const mapStateToProps = state => {
     return {
-        test: state.testView
+        test: state.testView,
+        scores: state.scores
     }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -17,19 +17,28 @@ function getScore(question, value) {
         }
         return prev;
     }, 0);
-    return (value * total) / 100;
+    const isCorrect = total === 100 ? 'correct' : 'incorrect';
+    return [(value * total) / 100, isCorrect];
 }
 
 export function checkAnswers(qa) {
+    const results = [];
     const time = (Math.random() * 1000).toFixed();
     const questionPoint = 100 / quiz.questions.length;
     // Calculate the score of each question
     const scores = qa.map(question => {
-        return getScore(question, questionPoint)
+        const [score, isCorrect] = getScore(question, questionPoint)
+        results.push({
+            id: question.id,
+            result: isCorrect,
+            score
+        })
+        return score;
     });
     const response = {
         topScore: 100,
-        score: Math.round(scores.reduce((prev, curr) => prev + curr))
+        totalScore: Math.round(scores.reduce((prev, curr) => prev + curr)),
+        results
     }
     return new Promise((resolve, reject) => {
         setTimeout(() => resolve(response), time)

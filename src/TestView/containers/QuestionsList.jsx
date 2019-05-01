@@ -4,25 +4,40 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import Question from '../components/Question';
 import { selectChoice, deselectChoice } from '../../actions/choices';
+import { addAnswer } from '../../actions/multipleChoiceTest';
+import { checkAnswers } from '../../actions/results';
 
 
 class QuestionsList extends Component {
     constructor(props) {
         super(props);
-        this.state = { current: 0 };
+        this.state = { current: 0, preliminarChoices: [] };
     }
-    nextQuestion = () => {
-        const { current } = this.state;
+    nextQuestion = (currentQuestion) => {
+        const { history, questions, addAnswer, answers, checkAnswers } = this.props;
+        const { current, preliminarChoices } = this.state;
+        const toSubmit = { id: currentQuestion, answers: preliminarChoices };
+        if (questions.length - 1 === current) {
+            checkAnswers([...answers, toSubmit]);
+            history.push('/results');
+        }
+        addAnswer(toSubmit);
         this.setState({ current: current + 1 });
+        this.setState({ preliminarChoices: [] });
     }
     choiceClicked = (choice) => {
         const { selectChoice, deselectChoice, choices } = this.props;
         const { selected } = choices;
+        const { preliminarChoices } = this.state;
         if (selected.includes(choice)) {
             deselectChoice(choice);
+            this.setState({
+                preliminarChoices: preliminarChoices.filter(pre => pre !== choice)
+            })
         }
         else {
             selectChoice(choice);
+            this.setState({ preliminarChoices: [...preliminarChoices, choice] });
         }
     }
     render() {
@@ -50,24 +65,36 @@ QuestionsList.propTypes = {
         }))
     })),
     choices: PropTypes.shape({ selected: PropTypes.arrayOf(PropTypes.string) }),
+    answers: PropTypes.array,
     selectChoice: PropTypes.func,
-    deselectChoice: PropTypes.func
+    deselectChoice: PropTypes.func,
+    history: PropTypes.object,
+    checkAnswers: PropTypes.func
 }
 
 QuestionsList.defaultProps = {
     question: null,
     choices: { selected: [] },
+    answers: [],
     selectChoice: () => null,
-    deselectChoice: () => null
+    deselectChoice: () => null,
+    history: null,
+    checkAnswers: () => null
 }
 
 const mapStateToProps = state => {
     return {
-        choices: state.choices
+        choices: state.choices,
+        answers: state.testView.answers
     }
 }
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ selectChoice, deselectChoice }, dispatch)
+    return bindActionCreators({
+        selectChoice,
+        deselectChoice,
+        addAnswer,
+        checkAnswers
+    }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionsList);

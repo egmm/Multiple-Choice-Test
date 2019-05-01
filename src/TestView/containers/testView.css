@@ -7,9 +7,16 @@ div#container {
     margin: auto 1em;
     box-shadow: 1px 1px 3px #b37d3b87;
     border-radius: 5px;
-    padding: 0.5em;
+    padding: 1em;
     background: #fff;
 }
 div#container h1 {
     text-align: center;
 }
+@media screen and (min-width: 700px) {
+    div#container {
+      padding: 2em;
+      width: 50vw;
+      margin: auto;
+    }
+  }

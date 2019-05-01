@@ -25,3 +25,8 @@ div#root {
   background-color: #ffca8757;
   padding: 1.5em 0;
 }
+@media screen and (min-width: 600px) {
+  div#root {
+    padding: 1.5em 10vw;
+  }
+}

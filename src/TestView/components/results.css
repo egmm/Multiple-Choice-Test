@@ -20,3 +20,15 @@ ul#results li:last-child {
 .incorrect {
     color: red;
 }
+@media screen and (min-width: 700px) {
+  ul#results {
+    width: 40vw;
+    margin: auto;
+  }
+  ul#results li>div {
+    width: 30vw;
+    margin: auto;
+    display: flex;
+    justify-content: space-between
+  }
+}

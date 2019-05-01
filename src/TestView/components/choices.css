@@ -13,3 +13,10 @@ ul.choices>li * {
 ul.choices>li span {
     margin-left: 1em;
 }
+
+@media screen and (min-width: 700px) {
+    .fancy-button {
+        width: 20vw;
+        margin: auto;
+    }
+}

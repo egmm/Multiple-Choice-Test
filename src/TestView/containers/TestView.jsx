@@ -22,6 +22,9 @@ class TestView extends Component {
         const { history } = this.props;
         history.push('/test');
     }
+    goHome = () => {
+        this.props.history.push('/');
+    }
     get content() {
         const { test, scores } = this.props;
         if (test.error) {
@@ -45,7 +48,10 @@ class TestView extends Component {
                     }
                     return (
                         scores.results ?
-                            <Results scores={scores.results} questions={test.content.questions} /> :
+                            <Results
+                                scores={scores.results}
+                                questions={test.content.questions}
+                                onClick={this.goHome} /> :
                             <p>We don't have results yet. Try to take a test first!</p>
                     );
                 }} />

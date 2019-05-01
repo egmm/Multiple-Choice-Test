@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
+import Button from '../../common/Button';
 import './results.css';
 
 
-const Results = ({ scores, questions }) => {
+const Results = ({ scores, questions, onClick }) => {
     const getResults = (id) => {
         for (const question of scores.results) {
             if (id === question.id) {
@@ -33,6 +34,7 @@ const Results = ({ scores, questions }) => {
                     })
                 }
             </ul>
+            <Button action='Go home' onClick={onClick} />
         </Fragment>
     );
 }
